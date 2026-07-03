@@ -1,0 +1,100 @@
+<%- include('../partials/header') %>
+
+<div class="container animate-fade-in delay-1">
+    
+    <!-- Encabezado de la Sección -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+        <div>
+            <h2 class="h3 mb-1">Listado de Empresas</h2>
+            <p class="text-muted mb-0">Visualiza y gestiona las Empresas registradas en el sistema local.</p>
+        </div>
+        <a href="/empresas/nueva" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle-fill"></i> Registrar Nueva Empresa
+        </a>
+    </div>
+
+    <!-- Módulo de Resumen Rápido -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-premium p-3 border-start border-primary border-4 shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1 small uppercase fw-bold">Empresas Totales</p>
+                        <h4 class="mb-0 fw-bold"><%= totalEmpresas %></h4>
+                    </div>
+                    <div class="stat-icon primary">
+                        <i class="bi bi-file-earmark-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contenedor de la Tabla -->
+    <% if (empresas.length === 0) { %>
+        <div class="card card-premium p-5 text-center shadow-sm">
+            <div class="my-3 text-muted">
+                <i class="bi bi-receipt-cutoff" style="font-size: 3.5rem;"></i>
+            </div>
+            <h4 class="mt-3">No hay Empresas registradas</h4>
+            <p class="text-secondary mb-4">Aún no has ingresado empresas al sistema. Presiona el botón de abajo para registrar tu primera empresa.</p>
+            <a href="/empresas/nueva" class="btn btn-primary btn-md mx-auto">
+                <i class="bi bi-plus-circle"></i> Agregar Primera Empresa
+            </a>
+        </div>
+    <% } else { %>
+        <div class="table-container shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-custom table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id empresa</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th class="text-center" style="width: 180px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% empresas.forEach(empresas => { %>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-dark text-white py-2 px-3 fw-bold font-display">
+                                        <%= empresas.id %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <strong class="text-dark"><%= empresas.nombre %></strong>
+                                </td>
+                                <td>
+                                    <span class="text-success fw-semibold">
+                                        <%= empresas.email %>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center">
+                                        <!-- Botón de Editar -->
+                                        <a href="/empresas/editar/<%= empresas.id %>" class="btn btn-warning btn-sm shadow-sm" title="Editar factura">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        
+                                        <!-- Formulario de Eliminación -->
+                                        <form action="/empresas/eliminar/<%= empresas.id %>" method="POST" class="d-inline form-eliminar" data-factura="<%= empresas.nombre %>">
+                                            <button type="submit" class="btn btn-danger btn-sm shadow-sm" title="Eliminar factura">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+
+</div>
+
+<%- include('../partials/footer') %>

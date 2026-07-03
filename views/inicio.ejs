@@ -1,0 +1,89 @@
+<%- include('partials/header') %>
+
+<div class="container hero-section">
+    <div class="row align-items-center">
+        <!-- Columna de Texto de Bienvenida -->
+        <div class="col-lg-6 mb-5 mb-lg-0 animate-fade-in delay-1">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-3 font-display">
+                Patrón de Diseño MVC Activo
+            </span>
+            <h1 class="hero-gradient-text mb-3">
+                Gestiona tus Facturas de Forma Inteligente
+            </h1>
+            <p class="lead text-secondary mb-4" style="font-size: 1.15rem; line-height: 1.7;">
+                Bienvenido a <strong>FacturaFlow</strong>, un sistema estructurado en Node.js, Express y MySQL que te permite controlar de manera ágil los egresos y pagos de facturas efectuados a empresas proveedoras.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+                <a href="/facturas" class="btn btn-primary btn-lg">
+                    <i class="bi bi-table"></i> Control de Facturas
+                </a>
+                <a href="/empresas" class="btn btn-primary btn-lg">
+                    <i class="bi bi-building"></i> Control de Empresas
+                </a>
+                <a href="/facturas/nueva" class="btn btn-outline-dark btn-lg">
+                    <i class="bi bi-plus-circle"></i> Nueva Factura
+                </a>
+            </div>
+        </div>
+
+        <!-- Columna del Dashboard de Estadísticas -->
+        <div class="col-lg-6 animate-fade-in delay-2">
+            <div class="row g-4">
+                
+                <!-- Tarjeta 1: Total Facturas -->
+                <div class="col-sm-6">
+                    <div class="card card-premium stat-card p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stat-icon primary">
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                            </div>
+                            <span class="text-muted small uppercase">Registradas</span>
+                        </div>
+                        <h3 class="display-5 fw-bold text-dark m-0"><%= totalFacturasEstadistica %></h3>
+                        <p class="text-secondary mt-2 mb-0">Total de Facturas</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Total Monto Pagado -->
+                <div class="col-sm-6">
+                    <div class="card card-premium stat-card monto p-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="stat-icon secondary">
+                                <i class="bi bi-cash-stack"></i>
+                            </div>
+                            <span class="text-muted small uppercase">Inversión</span>
+                        </div>
+                        <h3 class="display-6 fw-bold text-dark m-0">$<%= totalMonto %></h3>
+                        <p class="text-secondary mt-2 mb-0">Total Pagado</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Grande: Info del Proyecto -->
+                <div class="col-12">
+                    <div class="card card-premium p-4">
+                        <h4 class="mb-3 d-flex align-items-center gap-2 text-primary">
+                            <i class="bi bi-info-circle-fill"></i> Información del Entorno Local
+                        </h4>
+                        <div class="row text-center g-3">
+                            <div class="col-4 border-end">
+                                <p class="text-muted mb-1 small">Servidor</p>
+                                <span class="fw-semibold text-dark">Express</span>
+                            </div>
+                            <div class="col-4 border-end">
+                                <p class="text-muted mb-1 small">Base de Datos</p>
+                                <span class="fw-semibold text-dark">MySQL</span>
+                            </div>
+                            <div class="col-4">
+                                <p class="text-muted mb-1 small">Puerto</p>
+                                <span class="fw-semibold text-dark">3000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

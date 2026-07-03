@@ -1,0 +1,23 @@
+{
+  "name": "proyecto-crud-facturas",
+  "version": "1.0.0",
+  "description": "Un CRUD sencillo y elegante para la gestión de facturas pagadas a empresas usando Express, MySQL y EJS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "groq-sdk": "^1.2.1",
+    "mysql2": "^3.9.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

@@ -1,0 +1,158 @@
+<%- include('../partials/header') %>
+
+<div class="container animate-fade-in delay-1">
+    
+    <!-- Enlace para Volver -->
+    <div class="mb-3">
+        <a href="/facturas" class="text-decoration-none text-muted d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card card-premium shadow-lg">
+                <!-- Encabezado de la Tarjeta -->
+                <div class="card-header-premium d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-white text-dark">
+                        <% if (modo === 'crear') { %>
+                            <i class="bi bi-file-earmark-plus-fill text-primary"></i>
+                        <% } else { %>
+                            <i class="bi bi-pencil-square text-warning"></i>
+                        <% } %>
+                    </div>
+                    <div>
+                        <h2 class="h4 mb-0"><%= tituloPagina %></h2>
+                        <p class="text-white-50 mb-0 small">
+                            <% if (modo === 'crear') { %>
+                                Diligencia los campos para agregar un nuevo pago de factura al sistema.
+                            <% } else { %>
+                                Modifica los campos que desees actualizar de esta factura.
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del Formulario -->
+                <div class="card-body p-4">
+                    
+                    <form action="<%= modo === 'crear' ? '/facturas/nueva' : '/facturas/editar/' + factura.id %>" 
+                          method="POST" 
+                          class="needs-validation" 
+                          novalidate>
+                        
+                        <div class="row g-3">
+                            
+                            <!-- Número de Factura -->
+                            <div class="col-md-6">
+                                <label for="numero_factura" class="form-label">Número de Factura</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-hash"></i></span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="numero_factura" 
+                                           name="numero_factura" 
+                                           value="<%= factura.numero_factura %>" 
+                                           placeholder="Ej. FAC-1001" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingresa el número de factura.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empresa Beneficiaria (Relacional Dropdown) -->
+                            <div class="col-md-6">
+                                <label for="empresa_id" class="form-label">Empresa / Beneficiario</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-building"></i></span>
+                                    <select class="form-select" id="empresa_id" name="empresa_id" required>
+                                        <option value="" disabled <%= modo === 'crear' ? 'selected' : '' %>>-- Selecciona una empresa --</option>
+                                        <% empresas.forEach(emp => { %>
+                                            <option value="<%= emp.id %>" <%= factura.empresa_id == emp.id ? 'selected' : '' %>><%= emp.nombre %></option>
+                                        <% }) %>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Por favor, selecciona una empresa.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Monto de la Factura -->
+                            <div class="col-md-6">
+                                <label for="monto" class="form-label">Monto Pagado ($)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted">$</span>
+                                    <input type="number" 
+                                           step="0.01" 
+                                           min="0.01"
+                                           class="form-control" 
+                                           id="monto" 
+                                           name="monto" 
+                                           value="<%= factura.monto %>" 
+                                           placeholder="Ej. 1540.50" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingresa un monto válido mayor a 0.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha de Pago -->
+                            <div class="col-md-6">
+                                <label for="fecha_pago" class="form-label">Fecha de Pago</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-calendar-event"></i></span>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           id="fecha_pago" 
+                                           name="fecha_pago" 
+                                           value="<%= modo === 'editar' ? factura.fecha_pago_formateada : '' %>" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Selecciona una fecha de pago.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Descripción / Detalles con Botón de Generación IA -->
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <label for="descripcion" class="form-label mb-0">Descripción o Concepto <span class="text-muted">(Opcional)</span></label>
+                                    <button type="button" id="btn-generar-descripcion" class="btn btn-outline-info btn-sm py-1 px-3" style="font-size: 0.85rem; border-radius: 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;" title="Mejora el texto de tu descripción con Inteligencia Artificial para hacerlo más profesional.">
+                                        <i class="bi bi-magic text-info"></i> Mejorar con IA
+                                    </button>
+                                </div>
+                                <textarea class="form-control" 
+                                          id="descripcion" 
+                                          name="descripcion" 
+                                          rows="3" 
+                                          placeholder="Escribe un borrador de la descripción aquí, luego presiona 'Mejorar con IA' para que sea más profesional..."><%= factura.descripcion %></textarea>
+                                <div class="form-text text-muted" id="ia-status-msg" style="display: none;"></div>
+                            </div>
+
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+                            <a href="/facturas" class="btn btn-outline-secondary">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle-fill"></i> 
+                                <%= modo === 'crear' ? 'Guardar Factura' : 'Guardar Cambios' %>
+                            </button>
+                        </div>
+
+                    </form>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<%- include('../partials/footer') %>

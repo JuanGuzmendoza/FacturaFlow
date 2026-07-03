@@ -1,0 +1,106 @@
+<%- include('../partials/header') %>
+
+<div class="container animate-fade-in delay-1">
+    
+    <!-- Enlace para Volver -->
+    <div class="mb-3">
+        <a href="/empresas" class="text-decoration-none text-muted d-inline-flex align-items-center gap-1">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card card-premium shadow-lg">
+                <!-- Encabezado de la Tarjeta -->
+                <div class="card-header-premium d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-white text-dark">
+                        <% if (modo === 'crear') { %>
+                            <i class="bi bi-file-earmark-plus-fill text-primary"></i>
+                        <% } else { %>
+                            <i class="bi bi-pencil-square text-warning"></i>
+                        <% } %>
+                    </div>
+                    <div>
+                        <h2 class="h4 mb-0"><%= tituloPagina %></h2>
+                        <p class="text-white-50 mb-0 small">
+                            <% if (modo === 'crear') { %>
+                                Diligencia los campos para agregar una nueva empresa.
+                            <% } else { %>
+                                Modifica los campos que desees actualizar de esta empresa.
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del Formulario -->
+                <div class="card-body p-4">
+                    
+                    <form action="<%= modo === 'crear' ? '/empresas/nueva' : '/empresas/editar/' + empresa.id %>" 
+                          method="POST" 
+                          class="needs-validation" 
+                          novalidate>
+                        
+                        <div class="row g-3">
+                            
+                            <!-- Empresa nombre -->
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre de empresa</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-building"></i></span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="nombre" 
+                                           name="nombre" 
+                                           value="<%= empresa.nombre %>" 
+                                           placeholder="Ej. Microsoft Colombia" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingresa el nombre de la empresa.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email de la Empresa -->
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email de la Empresa</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email_empresa" 
+                                           name="email_empresa" 
+                                           value="<%= empresa.email %>" 
+                                           placeholder="Ej. info@microsoft.com" 
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Por favor, ingresa un email válido.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top">
+                            <a href="/empresas" class="btn btn-outline-secondary">
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle-fill"></i> 
+                                <%= modo === 'crear' ? 'Guardar Empresa' : 'Guardar Cambios' %>
+                            </button>
+                        </div>
+
+                    </form>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<%- include('../partials/footer') %>

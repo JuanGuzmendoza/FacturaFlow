@@ -1,0 +1,96 @@
+<%- include('partials/header') %>
+
+<div class="container animate-fade-in delay-1 pb-5">
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="card card-premium shadow-lg overflow-hidden" style="height: 75vh; display: flex; flex-direction: column;">
+                
+                <!-- Cabecera del Chat -->
+                <div class="card-header-premium d-flex align-items-center justify-content-between py-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon bg-white text-dark shadow-sm">
+                            <i class="bi bi-robot text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 mb-0 text-white">Asistente Inteligente de Facturas</h3>
+                            <span class="badge bg-success px-2 py-1" style="font-size: 0.75rem;">
+                                <i class="bi bi-dot"></i> En línea | Llama 3.3
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="bi bi-info-circle-fill" title="Este chatbot traduce tus preguntas a consultas SQL de forma segura."></i>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del Chat (Mensajes y Sugerencias) -->
+                <div class="card-body p-4 bg-light d-flex flex-column" style="flex: 1; overflow-y: auto; position: relative;" id="chat-body">
+                    
+                    <!-- Sugerencias Iniciales -->
+                    <div class="mb-4" id="suggestions-container">
+                        <h6 class="text-muted small uppercase fw-bold mb-2">Preguntas Sugeridas</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-suggestion text-start py-1 px-3">
+                                ¿Cuántas facturas tiene la empresa Claro?
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-suggestion text-start py-1 px-3">
+                                ¿Cuál fue la factura más alta?
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-suggestion text-start py-1 px-3">
+                                ¿Cuánto se ha pagado en total este mes?
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-suggestion text-start py-1 px-3">
+                                Muéstrame las 5 facturas más recientes
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Flujo de Conversación -->
+                    <div id="messages-container" class="d-flex flex-column gap-3">
+                        <!-- Mensaje de bienvenida de la IA -->
+                        <div class="chat-message bot">
+                            <div class="chat-bubble">
+                                ¡Hola! 👋 Soy tu asistente inteligente. Puedes preguntarme cualquier consulta sobre tus facturas o empresas registradas de forma natural (ej. *cuánto se pagó a Claro* o *cuál es la factura más antigua*).
+                                <br><br>
+                                Traduciré tu pregunta a código SQL, consultaré la base de datos de manera segura y te responderé en segundos. ¿En qué te ayudo hoy?
+                            </div>
+                            <span class="chat-time text-muted small mt-1">FacturaBot</span>
+                        </div>
+                    </div>
+
+                    <!-- Indicador de Carga / Generando -->
+                    <div class="chat-message bot align-self-start mt-3" id="chat-loading" style="display: none;">
+                        <div class="chat-bubble py-2 px-3 d-flex align-items-center gap-2">
+                            <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                            <div class="spinner-grow spinner-grow-sm text-info" role="status"></div>
+                            <span class="text-muted small">Consultando y analizando base de datos...</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Formulario de Entrada de Texto -->
+                <div class="card-footer p-3 bg-white border-top">
+                    <form id="chat-form" class="input-group">
+                        <input type="text" 
+                               id="chat-input" 
+                               class="form-control py-3 border-secondary-subtle" 
+                               placeholder="Escribe tu pregunta aquí (ej. ¿Cuál es el promedio de pagos?)..." 
+                               autocomplete="off" 
+                               required>
+                        <button class="btn btn-primary px-4" type="submit" id="btn-send">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<%- include('partials/footer') %>

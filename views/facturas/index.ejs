@@ -1,0 +1,122 @@
+<%- include('../partials/header') %>
+
+<div class="container animate-fade-in delay-1">
+    
+    <!-- Encabezado de la Sección -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+        <div>
+            <h2 class="h3 mb-1">Listado de Facturas Pagadas</h2>
+            <p class="text-muted mb-0">Visualiza y gestiona las facturas registradas en el sistema local.</p>
+        </div>
+        <a href="/facturas/nueva" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle-fill"></i> Registrar Nueva Factura
+        </a>
+    </div>
+
+    <!-- Módulo de Resumen Rápido -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-premium p-3 border-start border-primary border-4 shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1 small uppercase fw-bold">Facturas Totales</p>
+                        <h4 class="mb-0 fw-bold"><%= totalFacturas %></h4>
+                    </div>
+                    <div class="stat-icon primary">
+                        <i class="bi bi-file-earmark-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-premium p-3 border-start border-info border-4 shadow-sm">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1 small uppercase fw-bold">Monto Consolidado</p>
+                        <h4 class="mb-0 fw-bold">$<%= sumaMonto %></h4>
+                    </div>
+                    <div class="stat-icon secondary">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de la Tabla -->
+    <% if (facturas.length === 0) { %>
+        <div class="card card-premium p-5 text-center shadow-sm">
+            <div class="my-3 text-muted">
+                <i class="bi bi-receipt-cutoff" style="font-size: 3.5rem;"></i>
+            </div>
+            <h4 class="mt-3">No hay facturas registradas</h4>
+            <p class="text-secondary mb-4">Aún no has ingresado facturas al sistema. Presiona el botón de abajo para registrar tu primer pago.</p>
+            <a href="/facturas/nueva" class="btn btn-primary btn-md mx-auto">
+                <i class="bi bi-plus-circle"></i> Agregar Primera Factura
+            </a>
+        </div>
+    <% } else { %>
+        <div class="table-container shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-custom table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nº Factura</th>
+                            <th>Empresa Beneficiaria</th>
+                            <th>Monto Pagado</th>
+                            <th>Fecha de Pago</th>
+                            <th>Descripción</th>
+                            <th class="text-center" style="width: 180px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% facturas.forEach(factura => { %>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-dark text-white py-2 px-3 fw-bold font-display">
+                                        <%= factura.numero_factura %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <strong class="text-dark"><%= factura.nombre_empresa %></strong>
+                                </td>
+                                <td>
+                                    <span class="text-success fw-semibold">
+                                        $<%= parseFloat(factura.monto).toLocaleString('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <i class="bi bi-calendar3 me-1 text-muted"></i>
+                                    <%= new Date(factura.fecha_pago).toLocaleDateString('es-CO', { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                </td>
+                                <td>
+                                    <span class="text-muted text-truncate d-inline-block" style="max-width: 250px;" title="<%= factura.descripcion %>">
+                                        <%= factura.descripcion || 'Sin descripción' %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center">
+                                        <!-- Botón de Editar -->
+                                        <a href="/facturas/editar/<%= factura.id %>" class="btn btn-warning btn-sm shadow-sm" title="Editar factura">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        
+                                        <!-- Formulario de Eliminación -->
+                                        <form action="/facturas/eliminar/<%= factura.id %>" method="POST" class="d-inline form-eliminar" data-factura="<%= factura.numero_factura %>">
+                                            <button type="submit" class="btn btn-danger btn-sm shadow-sm" title="Eliminar factura">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+
+</div>
+
+<%- include('../partials/footer') %>
